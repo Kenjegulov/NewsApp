@@ -25,15 +25,15 @@ class _HomeViewState extends State<HomeView> {
           totalResults: response.data["totalResults"],
           articles: Article(
               source: Source(
-                  id: response.data["articles"][0]["source"]["id"],
-                  name: response.data["articles"][0]["source"]["name"]),
-              author: response.data["articles"][0]["author"],
-              title: response.data["articles"][0]["title"],
-              description: response.data["articles"][0]["description"],
-              url: response.data["articles"][0]["url"],
-              urlToImage: response.data["articles"][0]["urlToImage"],
-              publishedAt: response.data["articles"][0]["publishedAt"],
-              content: response.data["articles"][0]["content"]),
+                  id: response.data["articles"][1]["source"]["id"],
+                  name: response.data["articles"][1]["source"]["name"]),
+              author: response.data["articles"][1]["author"],
+              title: response.data["articles"][1]["title"],
+              description: response.data["articles"][1]["description"],
+              url: response.data["articles"][1]["url"],
+              urlToImage: response.data["articles"][1]["urlToImage"],
+              publishedAt: response.data["articles"][1]["publishedAt"],
+              content: response.data["articles"][1]["content"]),
         );
       });
     }
