@@ -16,11 +16,8 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  TopNews? topNews;
   final http.Client client = http.Client();
-
   List<TopNews> jsonResponsies = [];
-
   int items = 0;
 
   void newsData() async {
@@ -32,12 +29,9 @@ class _HomeViewState extends State<HomeView> {
           convert.jsonDecode(response.body) as Map<String, dynamic>;
       items = jsonResponse["articles"].length;
 
-      for (int i = 0; i < 2; i++) {
+      for (int i = 0; i < items; i++) {
         setState(() {
-          topNews = TopNews.fromJson(jsonResponse, i);
-          print(topNews);
-          print("Arsen");
-          jsonResponsies.add(topNews!);
+          jsonResponsies.add(TopNews.fromJson(jsonResponse, i));
         });
       }
     }
@@ -52,26 +46,25 @@ class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Center(child: Text('Tapshyrma 10 $items')),
-        ),
-        body: ListView.builder(
-          itemCount: items,
-          prototypeItem: ListTile(
-            title: Text("$items"),
-          ),
-          itemBuilder: (context, index) {
-            return ListTile(
-              title: Column(
-                children: [
-                  Text(jsonResponsies[index].status),
-                  Text("${jsonResponsies[index].totalResults}"),
-                  Text("${jsonResponsies[index].articles.source.id}"),
-                  Text(jsonResponsies[index].articles.source.name),
-                  Text("${jsonResponsies[index].articles.author}"),
-                  Text(jsonResponsies[index].articles.title),
-                  Text(jsonResponsies[index].articles.description),
-                  GestureDetector(
+      appBar: AppBar(
+        title: const Text('News Aggregator'),
+        backgroundColor: const Color(0xffFE5722),
+      ),
+      body: ListView.builder(
+        itemCount: items,
+        padding: const EdgeInsets.all(0.0),
+        itemBuilder: (context, index) {
+          return Card(
+            child: Column(
+              children: <Widget>[
+                ListTile(
+                  leading: Image(
+                    image: NetworkImage(
+                        "${jsonResponsies[index].articles.urlToImage}"),
+                    fit: BoxFit.cover,
+                    width: 100.0,
+                  ),
+                  title: GestureDetector(
                     onTap: () async {
                       final Uri url =
                           Uri.parse(jsonResponsies[index].articles.url);
@@ -82,22 +75,19 @@ class _HomeViewState extends State<HomeView> {
                       }
                     },
                     child: Text(
-                      jsonResponsies[index].articles.title,
+                      jsonResponsies[index].articles.source.name,
                       style: const TextStyle(
                           color: Colors.blue,
-                          fontSize: 20,
+                          fontSize: 15,
                           fontWeight: FontWeight.w100),
                     ),
                   ),
-                  Image(
-                      image: NetworkImage(
-                          "${jsonResponsies[index].articles.urlToImage}")),
-                  Text(jsonResponsies[index].articles.publishedAt),
-                  Text(jsonResponsies[index].articles.content),
-                ],
-              ),
-            );
-          },
-        ));
+                ),
+              ],
+            ),
+          );
+        },
+      ),
+    );
   }
 }
