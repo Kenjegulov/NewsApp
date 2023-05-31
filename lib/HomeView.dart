@@ -48,41 +48,98 @@ class _HomeViewState extends State<HomeView> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('News Aggregator'),
+        actions: [
+          PopupMenuButton(
+              // icon: Icon(Icons.book),
+              color: Colors.white,
+              itemBuilder: (context) {
+                return [
+                  const PopupMenuItem<int>(
+                    value: 0,
+                    child: Text("Select"),
+                  ),
+                  const PopupMenuItem<int>(
+                    value: 1,
+                    child: Text("Settings"),
+                  ),
+                  const PopupMenuItem<int>(
+                    value: 2,
+                    child: Text("Logout"),
+                  ),
+                ];
+              },
+              onSelected: (value) {
+                if (value == 0) {
+                  print("Select menu is selected.");
+                } else if (value == 1) {
+                  print("Settings menu is selected.");
+                } else if (value == 2) {
+                  print("Logout menu is selected.");
+                }
+              }),
+        ],
         backgroundColor: const Color(0xffFE5722),
       ),
       body: ListView.builder(
         itemCount: items,
         padding: const EdgeInsets.all(0.0),
         itemBuilder: (context, index) {
-          return Card(
+          return Padding(
+            padding: const EdgeInsets.only(left: 30, right: 20.6, top: 30),
             child: Column(
-              children: <Widget>[
-                ListTile(
-                  leading: Image(
-                    image: NetworkImage(
-                        "${jsonResponsies[index].articles.urlToImage}"),
-                    fit: BoxFit.cover,
-                    width: 100.0,
-                  ),
-                  title: GestureDetector(
-                    onTap: () async {
-                      final Uri url =
-                          Uri.parse(jsonResponsies[index].articles.url);
-                      if (await canLaunchUrl(url)) {
-                        await launchUrl(url);
-                      } else {
-                        throw 'Could not launch $url';
-                      }
-                    },
-                    child: Text(
-                      jsonResponsies[index].articles.source.name,
-                      style: const TextStyle(
-                          color: Colors.blue,
-                          fontSize: 15,
-                          fontWeight: FontWeight.w100),
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      flex: 3,
+                      child: Image(
+                        image: NetworkImage(
+                            "${jsonResponsies[index].articles.urlToImage}"),
+                        width: 300,
+                        height: 200,
+                      ),
                     ),
-                  ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      flex: 5,
+                      child: Column(
+                        textDirection: TextDirection.ltr,
+                        children: [
+                          Text(
+                              jsonResponsies[index]
+                                  .articles
+                                  .publishedAt
+                                  .substring(0, 10),
+                              textDirection: TextDirection.ltr),
+                          GestureDetector(
+                            onTap: () async {
+                              final Uri url =
+                                  Uri.parse(jsonResponsies[index].articles.url);
+                              if (await canLaunchUrl(url)) {
+                                await launchUrl(url);
+                              } else {
+                                throw 'Could not launch $url';
+                              }
+                            },
+                            child: Text(
+                              jsonResponsies[index].articles.title,
+                              style: const TextStyle(
+                                  color: Colors.blue,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w500),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
+                const Divider(
+                  height: 20,
+                  thickness: 0,
+                  endIndent: 0,
+                  color: Color(0xff000000),
+                )
               ],
             ),
           );
