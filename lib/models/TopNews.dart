@@ -1,8 +1,8 @@
 import 'Article.dart';
 
 class TopNews {
-  final String status;
-  final int totalResults;
+  final String? status;
+  final int? totalResults;
   final Article articles;
 
   TopNews(

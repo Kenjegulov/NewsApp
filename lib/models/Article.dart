@@ -8,7 +8,7 @@ class Article {
   final String url;
   final String? urlToImage;
   final String publishedAt;
-  final String content;
+  final String? content;
 
   Article(
       {required this.source,

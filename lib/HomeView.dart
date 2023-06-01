@@ -94,7 +94,8 @@ class _HomeViewState extends State<HomeView> {
                       flex: 3,
                       child: Image(
                         image: NetworkImage(
-                            "${jsonResponsies[index].articles.urlToImage}"),
+                          "${jsonResponsies[index].articles.urlToImage}",
+                        ),
                         width: 300,
                         height: 200,
                       ),
