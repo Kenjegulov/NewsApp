@@ -3,20 +3,18 @@ import 'Article.dart';
 class TopNews {
   final String? status;
   final int? totalResults;
-  final Article articles;
+  final List<Article> articles;
 
   TopNews(
       {required this.status,
       required this.totalResults,
       required this.articles});
 
-  factory TopNews.fromJson(Map<String, dynamic> json, int index) {
+  factory TopNews.fromJson(Map<String, dynamic> json) {
     return TopNews(
-      status: json["status"],
-      totalResults: json["totalResults"],
-      articles: Article.fromJson(
-        json["articles"][index],
-      ),
-    );
+        status: json["status"],
+        totalResults: json["totalResults"],
+        articles: List<Article>.from(
+            (json['articles']).map((e) => Article.fromJson(e))));
   }
 }
